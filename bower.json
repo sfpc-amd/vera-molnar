@@ -1,0 +1,7 @@
+{
+  "name": "vera-molnar",
+  "version": "0.0.1",
+  "dependencies": {
+    "p5js": "~0.4.12"
+  }
+}
