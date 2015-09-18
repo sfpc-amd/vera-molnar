@@ -3,6 +3,8 @@ var gridSpacing;
 var totalLines;
 var points = [];
 var vertices = [];
+var animationSegmentLength;
+
 function setup() {
 	createCanvas(windowWidth, windowHeight);
 	background(0);
@@ -11,8 +13,10 @@ function setup() {
 
 	gridSpacing = min(width/(gridSize+1), height/(gridSize+1));
 	totalLines = gridSize*gridSize;
+	animationSegmentLength = gridSpacing;
 
 	points = generatePoints();
+	vertices = generateVertices(points);
 
 	translate(gridSpacing, gridSpacing);
 
@@ -21,24 +25,56 @@ function setup() {
 	drawLines();
 }
 
+function draw() {
+	// drawVertices(vertices);
+}
+
+
 function generateVertices(points) {
 	var v = [];
 
 	points.forEach(function(p) {
 		// c^2 = a^2 + b^2
-		var len = sqrt(sq(p.x) + sq(p.y))
+		var xLen = p[1].x*gridSpacing - p[0].x*gridSpacing
+				, yLen = p[1].y*gridSpacing - p[0].y*gridSpacing
+				, len = sqrt(sq(xLen) + sq(yLen))
 				// number of segments
-				, seg = len / (gridSpacing/2)
-				, segLen = len/seg;
+				, angle = sin(yLen, len)
+				// total segments
+				, seg = len / animationSegmentLength;
+
+		// console.log(p, yLen, xLen, len, degrees(angle), seg);
 
 		for(var i=0; i<seg; i++) {
-			v.push(createVector())
+			// sin(angle) = y/(segLen*i)
+			// y = sin(angle) * (segLen*i)
+			v.push({
+				x: sin(angle)*animationSegmentLength*i
+				, y: cos(angle)*animationSegmentLength*i
+			});
 		}
 
 	});
 
+
+	// console.log(v);
 	return v;
 
+}
+
+function drawVertices(vertices) {
+
+	if(frameCount > vertices.length) {
+		len = vertices.length;
+	} else {
+		len = frameCount;
+	}
+
+	beginShape();
+	for(var i = 0; i<len; i++) {
+		vertex(vertices[i].x, vertices[i].y);
+	}
+	endShape();
 }
 
 function generatePoints() {
@@ -69,11 +105,13 @@ function drawLines() {
 }
 
 function randomPoint() {
-	return createVector(floor(random(gridSize)), floor(random(gridSize)));
+	return {
+		x: floor(random(gridSize))
+		, y: floor(random(gridSize))
+	};
 }
 
 function drawLine(startPoint, endPoint) {
-	console.log('drawLine', startPoint, endPoint);
 	line(startPoint.x*gridSpacing, startPoint.y*gridSpacing, endPoint.x*gridSpacing, endPoint.y*gridSpacing);
 }
 
