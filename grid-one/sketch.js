@@ -87,13 +87,26 @@ function generatePoints() {
 		startPoint = endPoint;
 		endPoint = randomPoint();
 	}
+	// console.log('points', p);
 
 	return p;
 
 }
 
+function createVectors() {
+	var v = [];
+
+	for(var i = 0; i<gridSize; i++) {
+		for(var j = 0; j < gridSize; j++) {
+			v.push(createVector(i*gridSpacing, j*gridSpacing));
+		}
+	}
+
+	return v;
+}
+
 function drawLines() {
-	var startPoint = randomPoint()
+	var startPoint = randomPoint()   
 		, endPoint = randomPoint();
 
 	console.log(startPoint, endPoint, totalLines);
@@ -106,13 +119,13 @@ function drawLines() {
 
 function randomPoint() {
 	return {
-		x: floor(random(gridSize))
-		, y: floor(random(gridSize))
+		x: floor(random(gridSize))*gridSpacing
+		, y: floor(random(gridSize))*gridSpacing
 	};
 }
 
 function drawLine(startPoint, endPoint) {
-	line(startPoint.x*gridSpacing, startPoint.y*gridSpacing, endPoint.x*gridSpacing, endPoint.y*gridSpacing);
+	line(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 }
 
 function drawSimpleGrid() {
