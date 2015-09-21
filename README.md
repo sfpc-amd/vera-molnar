@@ -72,4 +72,5 @@ Design Notes
 
 Present as a webpage that loads just as a duplication of Molnar's composition in the window. Scrolling down will reveal:
 
- - A e
+ - A description of the project
+ - An image of each previous generation, including information about those which were selected.
