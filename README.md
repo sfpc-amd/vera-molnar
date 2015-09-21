@@ -2,6 +2,10 @@ Hommage à Molnar
 ---------------- 
 http://digitalartmuseum.org/gallery/image/8745.html
 
+"In spite of their advantages, computers, no more than other simpler tools, do not guarantee that a work of art of good quality will result, for it is an artist's skill that is the decisive factor"
+
+ - Vera Molnar, "Toward Aesthetic Guidelines for Painting with the Aid of a Computer"
+
 Todo
 ----
 
@@ -63,3 +67,9 @@ Need to combine attributes of selected individuals for new population. Essential
 Maybe randomly swap a few of the items in new populations?
 
 
+Design Notes
+============
+
+Present as a webpage that loads just as a duplication of Molnar's composition in the window. Scrolling down will reveal:
+
+ - A e
