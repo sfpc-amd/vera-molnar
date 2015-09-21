@@ -5,11 +5,11 @@ http://digitalartmuseum.org/gallery/image/8745.html
 Todo
 ----
 
-[x] start new sketch for gen algorithm
-[ ] research genetic algorithms
-[ ] figure out how to use a gen algorithm to recreate
-[ ] proto with gen algorithm 
-[ ] start new sketch and build composition based on above
+ - [x] start new sketch for gen algorithm
+ - [ ] research genetic algorithms
+ - [ ] figure out how to use a gen algorithm to recreate
+ - [ ] proto with gen algorithm 
+ - [ ] start new sketch and build composition based on above
 
 
 Implementation
