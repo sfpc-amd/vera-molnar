@@ -1,6 +1,6 @@
 // big thanks to gene kogen for helping work this out!
 var frameInterval  = 15;
-
+var FINAL = [0, 13, 14, 3, 11, 6, 5, 8, 7, 10, 9, 4, 12, 1, 2, 15];
 
 var m;
 
@@ -14,8 +14,10 @@ function setup() {
 	stroke(255);
 	strokeWeight(1);
 
-	m = new MolnarGrid(4, 4, 10,10, 300, 300);
-	m.createOrder();
+	var margin = 50;
+
+	m = new MolnarGrid(4, 4, margin, margin, (width-(margin*2)), (height-(margin*2)));
+	m.createOrder(FINAL);
 
 }
 
@@ -78,6 +80,10 @@ function MolnarGrid(gridSizeX, gridSizeY, gridX, gridY, gridWidth, gridHeight) {
 		}
 	}
 
+	this.isFinished = function() {
+		return (this.lastToDraw < this.gridSizeX*this.gridSizeY - 1);
+	}
+
 	this.getPosition = function(index) {
 
 			// use modulo (remainder) to get x position
@@ -98,32 +104,39 @@ function MolnarGrid(gridSizeX, gridSizeY, gridX, gridY, gridWidth, gridHeight) {
  * Create a permeatation of the array of indexes
  * corresponding to our 16 points
  */
-	this.createOrder = function() {
+	this.createOrder = function(set) {
 		// clear order
 		this.order = [];
-		// make new array of indexes to sample from
-		var all = [];
 
-		for(var k=0; k<this.gridSizeX*this.gridSizeY; k++) {
-			all.push(k)
-		}
+		if(set && set.length ) {
+			this.order = set;
+		} else {
 
-		var len = all.length;
 
-		// take a random element from all and append it to order, remove it from all
-		for(var i=0; i<this.gridSizeX*this.gridSizeY; i++) {
-			// pick a random index
-			var index = floor(random(all.length));
+			// make new array of indexes to sample from
+			var all = [];
 
-			// append that element from all into order
-			this.order.push(all[index]);
+			for(var k=0; k<this.gridSizeX*this.gridSizeY; k++) {
+				all.push(k)
+			}
 
-			// remove sampled element from all 
-			all.splice(index, 1);
+			var len = all.length;
 
-			println("Order: "+this.order);
-			println("All: "+all);
-		}		
+			// take a random element from all and append it to order, remove it from all
+			for(var i=0; i<this.gridSizeX*this.gridSizeY; i++) {
+				// pick a random index
+				var index = floor(random(all.length));
+
+				// append that element from all into order
+				this.order.push(all[index]);
+
+				// remove sampled element from all 
+				all.splice(index, 1);
+
+				// println("Order: "+this.order);
+				// println("All: "+all);
+			}	
+		}	
 	}
 
 }
