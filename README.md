@@ -73,69 +73,54 @@ Need to combine attributes of selected individuals for new population. Essential
 var individual1 = [1, 2, 12, 3, 13, 4, 7, 14, 8, 9, 10, 6, 15, 11, 0, 5];
 var individual2 = [13, 8, 15, 11, 14, 7, 12, 4, 1, 3, 2, 10, 5, 0, 9, 6];
 
-// this all gets rather confusing because our values are essentially
-// the same data set as our indexes, only in a different order!
+// our baby-to-be
+var child = [];
 
-// get our swap indexes
-var n = 2;
-var swapIndexes = [];
-var rand
+var dominantParent;
+var nonDominantParent;
 
-// get random values for `swapIndexes`
-while(swapIndexes.length < n) {
-  rand = Math.floor(Math.rand(individual1.length));
-  if(swapIndexes.indexOf(rand) === -1) {
-    swapIndexes.push(rand);
-  }
+
+// 1. randomly select a parent to be the initial genetic contributor
+if(Math.random() < 0.5) {
+  dominantParent = individual1;
+  nonDominantParent = individual2;
+} else {
+  dominantParent = individual2;
+  nonDominantParent = individual1;  
 }
 
-// now swap those indexes for each individual
-// showing example for when `value = 5`
-swapIndexes.forEach(function(value) {
+// 2. randomly select indexes to copy over verbatim.
 
-  // 5 is at index 15 in individual 1
-  var i1Index = individual1.indexOf(value);
-  // 5 is at index 12 in individual 2
-  var i2Index = individual2.indexOf(value);
-
-  // save existing values in swap slots
-
-  // 15 is at index 12 in individual 1
-  var i1Save = individual1[i2Index];
-  // 6 is at index 15 in individual 2
-  var i2Save = indivicual2[i1Index];
-
-  // swap indexes for individual 1
-  individual1[i1Index] = i1Save;
-  individual1[i2Index] = value;
-
-  // swap indexes for individual 2
-  individual2[i2Index] = i2Save;
-  individual2[i1Index] = value;
-
+dominantParent.forEeach(function(value, index) {
+  child[index] = (Math.random() < 0.5) ? value : undefined;
 });
 
-```
+// 3. iterate through empty slots in the child array & copy in from the other parent
+//    if those values aren't already in the child array
 
-# swap those indexes between the two individual
+child.forEach(function(value, index) {
+  if(typeof value === 'undefined' && child.indexOf(nonDominatParent[index]) === -1) {
+    child[index] = nonDominantParent[index];
+  };
+});
 
+// 4. fill in any remaining values
+if(child.length < individual1.length) {
+  individual1.forEach(function(value) {
+    var nextEmpty;
+    if(child.indexOf(value) === -1) {
+      nextEmpty = child.indexOf(undefined);
+      child[nextEmpty] = value;
+    }
+  });
+}
+
+// now we should have a merged version of both parent arrays, with some potential
+// mutation in cases where there were empty slots that needed to be filled
 
 ### Mutation
 
-This should be fairly straightforward, just swap indexes.
-
-```javascript
-
-// our unsuspecting victim
-var individual = [1, 2, 12, 3, 13, 4, 7, 14, 8, 9, 10, 6, 15, 11, 0, 5];
-
-// number of mutations
-var nMutations = 1;
-
-
-
-
-```
+Because of how the crossover algorithm works, there should be some built-in mutation. However, may want to add another mutation step depending on how things work.
 
 
 Design Notes
