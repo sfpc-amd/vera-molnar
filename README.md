@@ -122,7 +122,7 @@ Now we should have a new generation of mated children.
 
 ### Crossover
 
-Need to combine attributes of selected individuals for new population. Essentially a random mixing? This is a little tricky because we need to maintain the same unique set of numbers. One approach would be to switch certain indexes between individuals:
+Need to combine attributes of selected individuals for new population. Essentially a random mixing? This is a little tricky because we need to maintain the same unique set of numbers.
 
 
 ```javascript
