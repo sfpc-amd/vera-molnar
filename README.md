@@ -27,7 +27,7 @@ Use a genetic algorithm to recreate Molnar's homage to Durer. Basic steps for th
 
 ### Initialization
 
-This should be variable, in order to eveluate speed. Would be nice to be able to 
+Start with a unique randomized set of arrays.
 
 ### Evaluation
 
@@ -60,7 +60,65 @@ var overallFitness = granularFitness.reduce(function(mem, value, i) {
 
 ### Selection
 
-Need to research selection methods, but essentially need to throw out the worst individuals for the next round.
+Sort the individuals by fitness, mate the most fit with each other. Should the most fit pair have more children? Is it necessary to remove some individuals from mating?
+
+```javascript
+
+// assume this is an array of existing individuals
+var individuals;
+// the maternity ward
+var children;
+// this will contain more info
+var evaluatedIndividuals;
+// the number of individuals that will be completely
+var extinctions = 2;
+
+// first evaluate fitness on each individual and
+individuals = individuals.map(function(individual, index) {
+  return {
+    // the dna is the original array
+    dna: individual
+    // assuming that we have a function defined that uses
+    // the fitness evaluation above
+    , granularFitness = getGranularFitness(individual)
+    , overallFitness = getOverallFitness(individual)
+  }
+})
+
+// now sort them
+individuals = individuals.sort(function(a, b) {
+  return a.overallFitness - b.overallFitness;
+});
+
+// turn into array of pairs
+var pairs = []
+while(individuals.length) {
+  pairs.push(pairs.splice(0, 2));
+}
+
+// if we want to remove the weakest from
+// the gene pool altogether
+// pairs.pop();
+
+
+var children = []
+
+// going to "mate" each pair both ways,
+// so each pair ends up with 2 kids
+pairs.forEach(function(pair, index) {
+  children.push(mateIndividuals(pair[0], pair[1]));
+  children.push(mateIndividuals(pair[1], pair[0]));
+});
+
+// in cases where we remove individuals from the gene pool,
+// we should fill in with randomly generated individuals
+while(children.length < individuals.length) {
+  children.push(getRandomIndividual());
+}
+
+```
+
+Now we should have a new generation of mated children.
 
 ### Crossover
 
@@ -118,11 +176,15 @@ if(child.length < individual1.length) {
 }
 ```
 
-Now we should have a merged version of both parent arrays, with some potential, mutation in cases where there were empty slots that needed to be filled
+Now we should have a merged version of both parent arrays, with some potential, mutation in cases where there were empty slots that needed to be filled.
 
 ### Mutation
 
 Because of how the crossover algorithm works, there should be some built-in mutation. However, may want to add another mutation step depending on how things work.
+
+## Data format
+
+It would probably be nice to store the geneology of our drawings as a particular data type. But what?
 
 
 Design Notes
