@@ -66,6 +66,8 @@ Need to research selection methods, but essentially need to throw out the worst 
 
 Need to combine attributes of selected individuals for new population. Essentially a random mixing? This is a little tricky because we need to maintain the same unique set of numbers. One approach would be to switch certain indexes between individuals:
 
+**Duh, they should be _mating_ not transforming each other. Final result should be a single offspring**
+
 ```javascript
 // our two love birds
 var individual1 = [1, 2, 12, 3, 13, 4, 7, 14, 8, 9, 10, 6, 15, 11, 0, 5];
@@ -81,7 +83,7 @@ var rand
 
 // get random values for `swapIndexes`
 while(swapIndexes.length < n) {
-  rand = Math.floor(Math.rand(desired.length));
+  rand = Math.floor(Math.rand(individual1.length));
   if(swapIndexes.indexOf(rand) === -1) {
     swapIndexes.push(rand);
   }
@@ -121,6 +123,19 @@ swapIndexes.forEach(function(value) {
 ### Mutation
 
 This should be fairly straightforward, just swap indexes.
+
+```javascript
+
+// our unsuspecting victim
+var individual = [1, 2, 12, 3, 13, 4, 7, 14, 8, 9, 10, 6, 15, 11, 0, 5];
+
+// number of mutations
+var nMutations = 1;
+
+
+
+
+```
 
 
 Design Notes
