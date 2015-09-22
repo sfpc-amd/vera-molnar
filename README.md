@@ -66,7 +66,6 @@ Need to research selection methods, but essentially need to throw out the worst 
 
 Need to combine attributes of selected individuals for new population. Essentially a random mixing? This is a little tricky because we need to maintain the same unique set of numbers. One approach would be to switch certain indexes between individuals:
 
-**Duh, they should be _mating_ not transforming each other. Final result should be a single offspring**
 
 ```javascript
 // our two love birds
@@ -76,6 +75,9 @@ var individual2 = [13, 8, 15, 11, 14, 7, 12, 4, 1, 3, 2, 10, 5, 0, 9, 6];
 // our baby-to-be
 var child = [];
 
+// our algorithm will have one parent that is genetically
+// dominant, and one that is less so (although it may work
+// the other way around in certain situations)
 var dominantParent;
 var nonDominantParent;
 
