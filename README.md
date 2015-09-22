@@ -116,9 +116,9 @@ if(child.length < individual1.length) {
     }
   });
 }
+```
 
-// now we should have a merged version of both parent arrays, with some potential
-// mutation in cases where there were empty slots that needed to be filled
+Now we should have a merged version of both parent arrays, with some potential, mutation in cases where there were empty slots that needed to be filled
 
 ### Mutation
 
