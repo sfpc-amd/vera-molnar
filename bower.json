@@ -2,6 +2,7 @@
   "name": "vera-molnar",
   "version": "0.0.1",
   "dependencies": {
-    "p5js": "~0.4.12"
+    "p5js": "~0.4.12",
+    "backbone": "~1.2.3"
   }
 }
