@@ -120,7 +120,7 @@ swapIndexes.forEach(function(value) {
 
 ### Mutation
 
-Maybe randomly swap a few of the items in new populations?
+This should be fairly straightforward, just swap indexes.
 
 
 Design Notes
