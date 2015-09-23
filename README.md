@@ -27,7 +27,7 @@ Use a genetic algorithm to recreate Molnar's homage to Durer. Basic steps for th
 
 ### Initialization
 
-This should be variable, in order to eveluate speed. Would be nice to be able to 
+Start with a unique randomized set of arrays.
 
 ### Evaluation
 
@@ -60,11 +60,70 @@ var overallFitness = granularFitness.reduce(function(mem, value, i) {
 
 ### Selection
 
-Need to research selection methods, but essentially need to throw out the worst individuals for the next round.
+Sort the individuals by fitness, mate the most fit with each other. Should the most fit pair have more children? Is it necessary to remove some individuals from mating?
+
+```javascript
+
+// assume this is an array of existing individuals
+var individuals;
+// the maternity ward
+var children;
+// this will contain more info
+var evaluatedIndividuals;
+// the number of individuals that will be completely
+var extinctions = 2;
+
+// first evaluate fitness on each individual and
+individuals = individuals.map(function(individual, index) {
+  return {
+    // the dna is the original array
+    dna: individual
+    // assuming that we have a function defined that uses
+    // the fitness evaluation above
+    , granularFitness = getGranularFitness(individual)
+    , overallFitness = getOverallFitness(individual)
+  }
+})
+
+// now sort them
+individuals = individuals.sort(function(a, b) {
+  return a.overallFitness - b.overallFitness;
+});
+
+// turn into array of pairs
+var pairs = []
+while(individuals.length) {
+  pairs.push(individuals.splice(0, 2));
+}
+
+// if we want to remove the weakest from
+// the gene pool altogether
+// pairs.pop();
+
+
+var children = []
+
+// going to "mate" each pair both ways,
+// so each pair ends up with 2 kids
+pairs.forEach(function(pair, index) {
+  children.push(mateIndividuals(pair[0], pair[1]));
+  children.push(mateIndividuals(pair[1], pair[0]));
+});
+
+// in cases where we remove individuals from the gene pool,
+// we should fill in with randomly generated individuals
+while(children.length < individuals.length) {
+  children.push(getRandomIndividual());
+}
+
+```
+
+Now we should have a new generation of mated children.
 
 ### Crossover
 
-Need to combine attributes of selected individuals for new population. Essentially a random mixing? This is a little tricky because we need to maintain the same unique set of numbers. One approach would be to switch certain indexes between individuals:
+Need to combine attributes of selected individuals for new population. Essentially a random mixing? This is a little tricky because we need to maintain the same unique set of numbers.
+
 
 **Duh, they should be _mating_ not transforming each other. Final result should be a single offspring**
 
@@ -73,69 +132,61 @@ Need to combine attributes of selected individuals for new population. Essential
 var individual1 = [1, 2, 12, 3, 13, 4, 7, 14, 8, 9, 10, 6, 15, 11, 0, 5];
 var individual2 = [13, 8, 15, 11, 14, 7, 12, 4, 1, 3, 2, 10, 5, 0, 9, 6];
 
-// this all gets rather confusing because our values are essentially
-// the same data set as our indexes, only in a different order!
+// our baby-to-be
+var child = [];
 
-// get our swap indexes
-var n = 2;
-var swapIndexes = [];
-var rand
+// our algorithm will have one parent that is genetically
+// dominant, and one that is less so (although it may work
+// the other way around in certain situations)
+var dominantParent;
+var nonDominantParent;
 
-// get random values for `swapIndexes`
-while(swapIndexes.length < n) {
-  rand = Math.floor(Math.rand(individual1.length));
-  if(swapIndexes.indexOf(rand) === -1) {
-    swapIndexes.push(rand);
-  }
+
+// 1. randomly select a parent to be the initial genetic contributor
+if(Math.random() < 0.5) {
+  dominantParent = individual1;
+  nonDominantParent = individual2;
+} else {
+  dominantParent = individual2;
+  nonDominantParent = individual1;  
 }
 
-// now swap those indexes for each individual
-// showing example for when `value = 5`
-swapIndexes.forEach(function(value) {
+// 2. randomly select indexes to copy over verbatim.
 
-  // 5 is at index 15 in individual 1
-  var i1Index = individual1.indexOf(value);
-  // 5 is at index 12 in individual 2
-  var i2Index = individual2.indexOf(value);
-
-  // save existing values in swap slots
-
-  // 15 is at index 12 in individual 1
-  var i1Save = individual1[i2Index];
-  // 6 is at index 15 in individual 2
-  var i2Save = indivicual2[i1Index];
-
-  // swap indexes for individual 1
-  individual1[i1Index] = i1Save;
-  individual1[i2Index] = value;
-
-  // swap indexes for individual 2
-  individual2[i2Index] = i2Save;
-  individual2[i1Index] = value;
-
+dominantParent.forEeach(function(value, index) {
+  child[index] = (Math.random() < 0.5) ? value : undefined;
 });
 
+// 3. iterate through empty slots in the child array & copy in from the other parent
+//    if those values aren't already in the child array
+
+child.forEach(function(value, index) {
+  if(typeof value === 'undefined' && child.indexOf(nonDominatParent[index]) === -1) {
+    child[index] = nonDominantParent[index];
+  };
+});
+
+// 4. fill in any remaining values
+if(child.length < individual1.length) {
+  individual1.forEach(function(value) {
+    var nextEmpty;
+    if(child.indexOf(value) === -1) {
+      nextEmpty = child.indexOf(undefined);
+      child[nextEmpty] = value;
+    }
+  });
+}
 ```
 
-# swap those indexes between the two individual
-
+Now we should have a merged version of both parent arrays, with some potential, mutation in cases where there were empty slots that needed to be filled.
 
 ### Mutation
 
-This should be fairly straightforward, just swap indexes.
+Because of how the crossover algorithm works, there should be some built-in mutation. However, may want to add another mutation step depending on how things work.
 
-```javascript
+## Data format
 
-// our unsuspecting victim
-var individual = [1, 2, 12, 3, 13, 4, 7, 14, 8, 9, 10, 6, 15, 11, 0, 5];
-
-// number of mutations
-var nMutations = 1;
-
-
-
-
-```
+It would probably be nice to store the geneology of our drawings as a particular data type. But what?
 
 
 Design Notes
