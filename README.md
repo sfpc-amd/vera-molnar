@@ -93,7 +93,7 @@ individuals = individuals.sort(function(a, b) {
 // turn into array of pairs
 var pairs = []
 while(individuals.length) {
-  pairs.push(pairs.splice(0, 2));
+  pairs.push(individuals.splice(0, 2));
 }
 
 // if we want to remove the weakest from
