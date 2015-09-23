@@ -11,15 +11,13 @@ var MolnarGrid = Backbone.Model.extend({
 			this.parents = attr.parents;
 		}
 
-		if(!attr.dna) {
+		if(!this.get('dna')) {
 			this.set('dna', this._randomDna(this.chromosomes));
 		}
 
 		// create a string that's uses as its base the number
 		// of chromosomes (hexidecimal for 16 chromosomes)
-		this.id = this.get('dna').map(function(n) {
-			return n.toString(this.chromosomes);
-		}, this).join('');
+		this.id = this._dnaString(this.get('dna'));
 	}
 
 	// will evaluate fitness based on desired 
@@ -81,16 +79,14 @@ var MolnarGrid = Backbone.Model.extend({
 		});
 
 		// now fill in the rest of the blanks. these will be mutations
-		if(childDna.length < myDna.length) {
-			myDna.forEach(function(value) {
-				var nextEmpty;
-				if(childDna.indexOf(value) === -1) {
-					nextEmpty = childDna.indexOf(undefined);
-					childDna[nextEmpty] = value;
-					mutations++
-				}
-			})
-		}
+		myDna.forEach(function(value) {
+			var nextEmpty;
+			if(childDna.indexOf(value) === -1) {
+				nextEmpty = childDna.indexOf(undefined);
+				childDna[nextEmpty] = value;
+				mutations++
+			}
+		})
 
 		// the miracle of birth!
 		child = new MolnarGrid({
@@ -99,11 +95,23 @@ var MolnarGrid = Backbone.Model.extend({
 			, parents: [self, lover]
 		});
 
+		// console.log('mated: ', this.get('dna'), lover.get('dna'), child.get('dna'));
+
 		this.children.push(child);
 
 		return child;
 
 	} 
+
+	, equalsDna: function(desired) {
+		return this.get('dna').join('') === desired.join('');
+	}
+
+	, _dnaString: function(dna) {
+		return dna.map(function(n) {
+			return n.toString(this.chromosomes);
+		}, this).join('');
+	}
 
 	// set dna to random value
 	, _randomDna: function(size) {

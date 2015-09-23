@@ -53,7 +53,7 @@ var MolnarGridGeneration = Backbone.Collection.extend({
 		// each member of the population with the one next to it
 		this.forEach(function(grid, index) {
 			var parent1 = grid
-				, parent2 = this.at(index);
+				, parent2 = this.at(index+1);
 
 			// this should be false for the very last iteration
 			if(parent1 && parent2) {
@@ -72,6 +72,12 @@ var MolnarGridGeneration = Backbone.Collection.extend({
 			{ desired: this.desired }
 		);
 
+	}
+
+	, checkForCompletion: function() {
+		return this.find(function(grid) {
+			grid.equalsDna(this.desired);
+		}, this);
 	}
 
 	, exportDna: function() {
