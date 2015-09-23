@@ -1,51 +1,26 @@
 
-
-var GenerationViewer = function(container, options) {
-	console.log('GenerationViewer', arguments);
-
-
-	this.container = container;
-	this.width = options.width;
-	this.height = options.height;
-
-	this.setup = function(data) {
-		this.data = data;
-
-		console.log('viewer data', data);
-
-		this.svg = d3.select(this.container)
-									.append('svg:svg')
-									.attr('width', this.width)
-									.attr('height', this.height)
-									.append('g');
-
-	};
-
-	this.update = function(data) {
-		if(data) {
-			this.data = data;
-		}
-
-
-		// now what??
-
-
-	};
-};
-
 (function(root, undefined) {
 	var desired = [0, 13, 14, 3, 11, 6, 5, 8, 7, 10, 9, 4, 12, 1, 2, 15]
 		, initialGeneration = new MolnarGridGeneration([], {desired: desired})
-		, secondGeneration;
+		, secondGeneration
+		, d3Data;
 
+	// create initial population
 	initialGeneration.createPopulation(16);
+
+	// now create second generation
 	secondGeneration = initialGeneration.mate();
 
-	viewer = new GenerationViewer('#home', {
+	d3Data = [initialGeneration.exportDna(), secondGeneration.exportDna()];
+
+	// setup and display the viewer
+	viewer = new GenerationView('#home', {
 		width: 500
 		, height: 500
 	});
-	viewer.setup([initialGeneration.exportDna(), secondGeneration.exportDna()]);
+	// setup with data
+	viewer.setup(d3Data);
+	// update
 	viewer.update();
 
 })(this);
