@@ -74,4 +74,10 @@ var MolnarGridGeneration = Backbone.Collection.extend({
 
 	}
 
+	, exportDna: function() {
+		return this.map(function(grid) {
+			return grid.get('dna');
+		});
+	}
+
 });
