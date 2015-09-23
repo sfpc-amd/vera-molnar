@@ -1,8 +1,16 @@
 var MolnarGridGeneration = Backbone.Collection.extend({
 	model: MolnarGrid
 
+	// when we sort we compare by overall fitness
+	, comparator: function(grid) {
+		return grid.get('overallFitness');
+	}
+
 	// include options for mating settings
 	, initialize: function(models, options) {
+		// console.log('MolnarGridGeneration#initialize', arguments);
+		options = options || {};
+
 		if(options.desired) {
 			this.desired = options.desired;
 		}
@@ -18,7 +26,7 @@ var MolnarGridGeneration = Backbone.Collection.extend({
 		}
 
 		for(var i = 0; i < count; i++) {
-			initialPopulation.push(now MolnarGrid());
+			initialPopulation.push(new MolnarGrid());
 		}
 
 		this.add(initialPopulation);
@@ -36,12 +44,10 @@ var MolnarGridGeneration = Backbone.Collection.extend({
 		// evaluate fitness on the population
 		this.forEach(function(grid) {
 			grid.evaluateFitness(this.desired);
-		});
+		}, this);
 
 		// sort the collection
-		this.sort(function(a, b) {
-			return a.get('overallFitness') - b.get('overallFitness');
-		});
+		this.sort();
 
 		// now theat the collection is sorted by fitness, mate
 		// each member of the population with the one next to it

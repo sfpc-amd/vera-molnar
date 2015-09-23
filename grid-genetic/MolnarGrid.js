@@ -1,17 +1,25 @@
 var MolnarGrid = Backbone.Model.extend({
-	, idAttribute: 'dna'
-	, chromosomes: 16
-	, children = []
+	chromosomes: 16
+	, children: []
 	// options for number of "genes"
 	, initialize: function(attr, options) {
+		attr = attr || {};
+		options = options || {};
+
 
 		if(attr.parents) {
 			this.parents = attr.parents;
 		}
 
 		if(!attr.dna) {
-			this.set('dna', _randomDna(this.chromosomes));
+			this.set('dna', this._randomDna(this.chromosomes));
 		}
+
+		// create a string that's uses as its base the number
+		// of chromosomes (hexidecimal for 16 chromosomes)
+		this.id = this.get('dna').map(function(n) {
+			return n.toString(this.chromosomes);
+		}, this).join('');
 	}
 
 	// will evaluate fitness based on desired 
