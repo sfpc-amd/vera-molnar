@@ -18,6 +18,8 @@ Todo
  - [ ] proto with gen algorithm 
  - [ ] start new sketch and build composition based on above
 
+Initial grid implemenation thanks to [Gene Kogan](http://twitter.com/genekogan) ([code here](https://github.com/genekogan/sfpc-code)).
+
 
 Implementation
 ---------------
