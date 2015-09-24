@@ -10,7 +10,7 @@
 	// create initial population
 	generations.push(firstGen.createPopulation(16));
 
-	while(!_.last(generations).checkForCompletion() && count < 500) {
+	while(!_.last(generations).checkForCompletion() && count < 200) {
 		last = _.last(generations);
 
 		// eval fitness
@@ -27,19 +27,20 @@
 
 	console.log('--->completed?', _.last(generations).checkForCompletion());
 
-	// d3Data = generations.map(function(gen) {
-	// 	gen.exportDna();
-	// });
+	d3Data = generations.map(function(gen) {
+		return gen.models;
+	});
 
-	// // setup and display the viewer
-	// viewer = new GenerationView('#home', {
-	// 	width: 500
-	// 	, height: 500
-	// });
-	// // setup with data
-	// viewer.setup(d3Data);
-	// // update
-	// viewer.update();
+	// setup and display the viewer
+	viewer = new GenerationView('#home', {
+		width: 1000
+		, height: 10000
+		, gridSize: 50
+	});
+	// setup with data
+	viewer.setup(d3Data);
+	// update
+	viewer.update();
 
 
 
