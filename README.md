@@ -5,7 +5,7 @@ Hommage à Molnar
 
 http://digitalartmuseum.org/gallery/image/8745.html
 
-"In spite of their advantages, computers, no more than other simpler tools, do not guarantee that a work of art of good quality will result, for it is an artist's skill that is the decisive factor"
+**"In spite of their advantages, computers, no more than other simpler tools, do not guarantee that a work of art of good quality will result, for it is an artist's skill that is the decisive factor"**
 
  - Vera Molnar, "Toward Aesthetic Guidelines for Painting with the Aid of a Computer"
 
