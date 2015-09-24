@@ -13,7 +13,7 @@ Todo
 ----
 
  - [x] start new sketch for gen algorithm
- - [ ] research genetic algorithms
+ - [x] research genetic algorithms
  - [ ] figure out how to use a gen algorithm to recreate
  - [ ] proto with gen algorithm 
  - [ ] start new sketch and build composition based on above
