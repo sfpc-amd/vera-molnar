@@ -10,7 +10,7 @@
 	// create initial population
 	generations.push(firstGen.createPopulation(16));
 
-	while(!_.last(generations).checkForCompletion() && count < 200) {
+	while(!_.last(generations).checkForCompletion() && count < 500) {
 		last = _.last(generations);
 
 		// eval fitness
@@ -19,7 +19,7 @@
 		var fitness = last.map(function(g) { return g.get('overallFitness'); });
 		var mutations = last.map(function(g) { return g.get('mutations')});
 		console.log('fitness', fitness);
-		console.log('mutations', mutations);
+		// console.log('mutations', mutations);
 
 		generations.push(last.mate());
 		count++;

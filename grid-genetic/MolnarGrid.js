@@ -68,7 +68,7 @@ var MolnarGrid = Backbone.Model.extend({
 
 		childDna = myDna.map(function(value, index) {
 			// randomly either set to my chromosome or leave undefined
-			return (Math.random() < 0.5) ? value : undefined;
+			return (Math.random() < 0.50) ? value : undefined;
 		});
 
 		// now fill empty slots with lovers' chromosomes if they fit	
