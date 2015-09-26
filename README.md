@@ -64,6 +64,8 @@ var overallFitness = granularFitness.reduce(function(mem, value, i) {
 
 Sort the individuals by fitness, mate the most fit with each other. Should the most fit pair have more children? Is it necessary to remove some individuals from mating?
 
+**Maybe need to use granular fitness in how mating pairs are selected?**
+
 ```javascript
 
 // assume this is an array of existing individuals
@@ -92,11 +94,64 @@ individuals = individuals.sort(function(a, b) {
   return a.overallFitness - b.overallFitness;
 });
 
-// turn into array of pairs
-var pairs = []
-while(individuals.length) {
-  pairs.push(individuals.splice(0, 2));
+
+// ok we need to attempt to pair with more granularly compatable mates.
+// this means that for each set of genes, the seeking individual will look
+// a mate that complements their least "fit" genes
+// this seeking should happen in order of overall fitness, so the most
+// fit find their ideal mate first.
+
+// question: is there any reason to limit how many partners an individual
+// has? if one individual happens to complement the rest of the population,
+// should they be able to mate with everyone? (does this society allow promiscuity?)
+
+// this will be a two-dimensional array of individuals.
+// each gene slot will be inhabited by the individual that is most fit
+// for that slot
+var fitnessMatrix = [];
+
+// fill empty slots in the fitness matrix
+for(var i = 0; i < individuals[0].length; i++ ){
+  fitnessMatrix[i] = null;
 }
+
+// populate the fitness matrix
+fitnessMatrix.forEach(function(value, geneIndex) {
+  var currentBest = fitnessMatrix.length;
+  var currentBestIndividual;
+
+  individuals.forEach(function(individual) {
+    if(individual.granularFitness[geneIndex] > currentBest) {
+      currentBest = individual.granularFitness[geneIndex];
+      currentBestIndividual = individual;
+    }
+  });
+
+  fitnessMatrix[geneIndex] = currentBestIndividual;
+});
+
+
+var pairs = [];
+// now go through individuals in order and find their least 'fit' gene
+individuals.forEach(function(individual, index) {
+  var currentWorstFitness = -1;
+  var currentWorstIndex;
+
+  individual.granularFitness.forEach(function(fitness, index) {
+    if(fitness > currentWorstFitness) {
+      currentWorstFitness = fitness;
+      currentWorstIndex = index;
+    }
+  });
+
+  pairs.push([individual, fitnessMatrix[currentWorstIndex]]);
+});
+
+// turn into array of pairs
+// var pairs = []
+// while(individuals.length) {
+//   pairs.push(individuals.splice(0, 2));
+// }
 
 // if we want to remove the weakest from
 // the gene pool altogether
@@ -125,9 +180,6 @@ Now we should have a new generation of mated children.
 ### Crossover
 
 Need to combine attributes of selected individuals for new population. Essentially a random mixing? This is a little tricky because we need to maintain the same unique set of numbers.
-
-
-**Duh, they should be _mating_ not transforming each other. Final result should be a single offspring**
 
 ```javascript
 // our two love birds
@@ -169,15 +221,13 @@ child.forEach(function(value, index) {
 });
 
 // 4. fill in any remaining values
-if(child.length < individual1.length) {
-  individual1.forEach(function(value) {
-    var nextEmpty;
-    if(child.indexOf(value) === -1) {
-      nextEmpty = child.indexOf(undefined);
-      child[nextEmpty] = value;
-    }
-  });
-}
+individual1.forEach(function(value) {
+  var nextEmpty;
+  if(child.indexOf(value) === -1) {
+    nextEmpty = child.indexOf(undefined);
+    child[nextEmpty] = value;
+  }
+});
 ```
 
 Now we should have a merged version of both parent arrays, with some potential, mutation in cases where there were empty slots that needed to be filled.
