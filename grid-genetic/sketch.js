@@ -31,17 +31,43 @@
 		return gen.models;
 	});
 
+	var windowSize = getWindowSize();
+	var gridMargins = {
+		top: 10
+		, right: 10
+		, bottom: 10
+		, left: 10
+	}
+	var gridSize = (windowSize.w / 16);
+
+	console.log(windowSize, gridSize, gridMargins);
+
+	// throw new Error('STOP');
+
 	// setup and display the viewer
 	viewer = new GenerationView('#home', {
-		width: 1000
-		, height: 10000
-		, gridSize: 50
+		width: windowSize.w
+		, height: windowSize.h * 10
+		, gridSize: gridSize
+		, gridMargins: gridMargins
 	});
 	// setup with data
 	viewer.setup(d3Data);
 	// update
 	viewer.update();
 
+
+
+	function getWindowSize() {
+		var w = window,
+	    d = document,
+	    e = d.documentElement,
+	    g = d.getElementsByTagName('body')[0],
+	    w = w.innerWidth || e.clientWidth || g.clientWidth,
+	    h = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+	   return { w:w, h:h };
+	}
 
 
 })(this);

@@ -7,6 +7,7 @@ var GenerationView = function(container, options) {
 	this.width = options.width;
 	this.height = options.height;
 	this.gridSize = options.gridSize;
+	this.gridMargins = options.gridMargins;
 
 	this.setup = function(data) {
 		this.data = data;
@@ -29,13 +30,7 @@ var GenerationView = function(container, options) {
 		// this will set the output range of our grid
 		var gridPoints = 4;
 		var gridSize = this.gridSize;
-		var gridMargins = {
-			top: 5
-			, right: 5
-			, bottom: 5
-			, left: 5
-		}
-
+		var gridMargins = this.gridMargins;
 
 		if(data) {
 			this.data = data;
