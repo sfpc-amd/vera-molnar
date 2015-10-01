@@ -5,12 +5,13 @@
 		, d3Data
 		, firstGen = new MolnarGridGeneration([], { desired: desired })
 		, count = 0
-		, last;
+		, last
+		, maxGenerations = 200;
 
 	// create initial population
 	generations.push(firstGen.createPopulation(16));
 
-	while(!_.last(generations).checkForCompletion() && count < 200) {
+	while(!_.last(generations).checkForCompletion() && count < maxGenerations) {
 		last = _.last(generations);
 
 		// eval fitness
@@ -47,7 +48,7 @@
 	// setup and display the viewer
 	viewer = new GenerationView('#home', {
 		width: windowSize.w
-		, height: windowSize.h * 10
+		, height: gridSize * maxGenerations
 		, gridSize: gridSize
 		, gridMargins: gridMargins
 	});

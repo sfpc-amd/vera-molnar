@@ -4,6 +4,11 @@
 	<title>Vera Molnar</title>
 	<style>
 		body { margin: 0; padding: 0;}
+		.molnar-grid-path {
+			stroke: #000;
+			fill: none;
+			stroke-weight: 1px;
+		}
 	</style>
 	<!--[if IE]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -11,8 +16,14 @@
 </head>
 
 <body id="home">
+		<script src="../vendor/d3/d3.js"></script>
+		<script src="../vendor/underscore/underscore.js"></script>
+		<script src="../vendor/backbone/backbone.js"></script>
 		<script src="../vendor/p5js/lib/p5.js"></script>
 		<script src="../vendor/p5js/lib/addons/p5.dom.js"></script>
+		<script src="MolnarGrid.js"></script>
+		<script src="MolnarGridGeneration.js"></script>
+		<script src="GenerationsView.js"></script>
 		<script src="sketch.js"></script>
 </body>
 </html>
