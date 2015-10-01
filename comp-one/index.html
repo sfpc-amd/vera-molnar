@@ -2,13 +2,45 @@
 <head>
 	<meta charset="utf-8">
 	<title>Vera Molnar</title>
+
+	<link href='https://fonts.googleapis.com/css?family=Vidaloka' rel='stylesheet' type='text/css'>
 	<style>
-		body { margin: 0; padding: 0;}
-		.molnar-grid-path {
+		body { margin: 0; padding: 0; background: #222;}
+
+		svg {
+			background: #eee;
+		}
+
+		svg .molnar-grid-path {
 			stroke: #000;
 			fill: none;
 			stroke-weight: 1px;
 		}
+
+		#main {
+			width: 100%;
+			height: 100%;
+			background: #eee;
+		}
+
+		#quote {
+			font-family: 'Vidaloka', serif;
+			color: #fff;
+			text-align: center;
+			padding: 7% 20%;
+		}
+
+		#quote blockquote {
+			font-weight: bold;
+			font-size: 50px;
+		}
+
+		#quote .citation {
+			font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
+			font-size: 30px;
+			padding: 0 10%;
+		}
+
 	</style>
 	<!--[if IE]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -16,6 +48,14 @@
 </head>
 
 <body id="home">
+		<section id="main"></section>
+
+		<section id="quote">
+			<blockquote>“In spite of their advantages, computers, no more than other simpler tools, do not guarantee that a work of art of good quality will result, for it is an artist’s skill that is the decisive factor”</blockquote>
+			<div class="citation">&mdash; Vera Molnar, "Toward Aesthetic Guidelines for Paintings with the Aid of a Computer” (<em>Leonardo</em>, 1975)</div>
+		</section>
+		<section id="genetic"></section>
+
 		<script src="../vendor/d3/d3.js"></script>
 		<script src="../vendor/underscore/underscore.js"></script>
 		<script src="../vendor/backbone/backbone.js"></script>

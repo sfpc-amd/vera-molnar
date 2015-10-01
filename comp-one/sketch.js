@@ -1,16 +1,20 @@
 // big thanks to gene kogen for helping work this out!
+var canvas;
 var frameInterval  = 15;
 
 var outerRect;
 var innerRect;
 var gridMargin;
 
+var generationDrawingStarted = false;
+
 var m;
 
 function setup() {
-	createCanvas(windowWidth, windowHeight);
+	canvas = createCanvas(windowWidth, windowHeight);
+	canvas.parent('main');
 	setupBackground();
-
+	drawBackground();
 	// createOrder();
 	lastToDraw = 1;
 	frameInterval = 15;
@@ -31,13 +35,18 @@ function setup() {
 	);
 
 	// m.createOrder();
-	drawGenerations();
+	// drawGenerations();
 
 }
 
 function draw() {
+
 	drawBackground();
 	m.draw();
+
+	if(!generationDrawingStarted) {
+			drawGenerations();
+	}
 }
 
 function setupBackground() {
@@ -202,6 +211,8 @@ function drawGenerations() {
 		, last
 		, maxGenerations = 200;
 
+	generationDrawingStarted = true;
+
 	// create initial population
 	generations.push(firstGen.createPopulation(16));
 
@@ -240,7 +251,7 @@ function drawGenerations() {
 	// throw new Error('STOP');
 
 	// setup and display the viewer
-	viewer = new GenerationView('#home', {
+	viewer = new GenerationView('#genetic', {
 		width: windowSize.w
 		, height: gridSize * maxGenerations
 		, gridSize: gridSize
