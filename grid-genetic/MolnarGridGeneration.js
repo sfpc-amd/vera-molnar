@@ -14,6 +14,8 @@ var MolnarGridGeneration = Backbone.Collection.extend({
 		if(options.desired) {
 			this.desired = options.desired;
 		}
+
+		this._genetic = this._initializeGenetic();
 	}
 
 	// create a population of `count` MolnarGrid instances
@@ -85,5 +87,25 @@ var MolnarGridGeneration = Backbone.Collection.extend({
 			return grid.get('dna');
 		});
 	}
+
+	// , _initializeGenetic: function(opts) {
+	// 	var opts = opts || {}
+	// 		, g = Genetic.create();
+
+	// 		g.optimize = Genetic.Optimize.Minimize();
+	// 		g.select1 = Genetic.Select1.Tournament2;
+	// 		g.select2 = Genetic.Select2.Tournament2;
+
+
+	// 	return g;
+	// }
+
+	// , _geneticSeed = function() {
+
+	// }
+
+	// , _geneticMutate = function() {
+		
+	// }
 
 });
