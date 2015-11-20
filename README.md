@@ -26,7 +26,7 @@ Implementation
 
 Use a genetic algorithm to recreate Molnar's homage to Durer. Basic steps for the algorithm (via [projectspot](http://www.theprojectspot.com/tutorial-post/creating-a-genetic-algorithm-for-beginners/3)):
 
-**The problem is in the mating!** Only the two fittest should ever mate.
+**The problem is in the mating!** Only the two fittest should be allowed to mate.
 
 ### Initialization
 

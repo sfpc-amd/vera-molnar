@@ -1,0 +1,41 @@
+{
+  "name": "genetic-js",
+  "version": "0.1.14",
+  "description": "Advanced genetic and evolutionary algorithm library",
+  "main": "lib/genetic.js",
+  "scripts": {
+    "test": "make check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/subprotocol/genetic-js"
+  },
+  "bugs": {
+    "url": "https://github.com/subprotocol/genetic-js/issues"
+  },
+  "keywords": [
+    "genetic",
+    "evolution",
+    "algorithm"
+  ],
+  "author": {
+    "name": "subprotocol",
+    "email": "smprotocol@gmail.com",
+    "url": "http://subprotocol.com/"
+  },
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "browserify": "~5.10.0",
+    "uglify-js": "~2.4.15",
+    "mocha": "~1.21.4"
+  },
+  "readme": "# genetic-js\n\nAdvanced genetic and evolutionary algorithm library written in Javascript by [Sub Protocol](http://subprotocol.com/).\n\n\n#### Rational\n\nThe existing Javascript GA/EP library landscape could collectively be summed up as, meh. All that I required to take over the world was a lightweight, performant, feature-rich, nodejs + browser compatible, unit tested, and easily hackable GA/EP library.  Seamless [Web Worker](http://en.wikipedia.org/wiki/Web_worker) support would be the icing on my cake.\n\nUntil now, no such thing existed. Now you can have my cake, and optimize it too. Is it perfect? *Probably*. Regardless, this library is my gift to you.\n\nHave fun optimizing all your optimizations!\n\n\n#### Examples\n\n* [Genetic Phrase Solver](http://subprotocol.com/system/genetic-hello-world.html)\n* [Genetic Curve Fitter](http://subprotocol.com/system/genetic-regression-curve.html)\n\n\n#### Install\n\n```npm install genetic-js```\n\n\n## Population Functions\n\nThe genetic-js interface exposes a few simple concepts and primitives, you just fill in the details/features you want to use.\n\t\t\n| Function                                  | Return Type              | Required   | Description\n| ----------------------------------------- | ------------------------ | ---------- | -----------\n| seed()                                    | Individual               | Yes        | Called to create an individual, can be of any type (int, float, string, array, object)\n| fitness(individual)                       | Float                    | Yes        | Computes a fitness score for an individual\n| mutate(individual)                        | Individual               | Optional   | Called when an individual has been selected for mutation\n| crossover(mother, father)                 | [Son, Daughter]          | Optional   | Called when two individuals are selected for mating. Two children should always returned\n| optimize(fitness, fitness)                | Boolean                  | Yes        | Determines if the first fitness score is better than the second. See [Optimizer](#optimizer) section below\n| select1(population)                       | Individual               | Yes        | See [Selection](#selection) section below\n| select2(population)                       | Individual               | Optional   | Selects a pair of individuals from a population. [Selection](#selection)\n| generation(pop, gen, stats)               | Boolean                  | Optional   | Called for each generation.  Return false to terminate end algorithm (ie- if goal state is reached)\n| notification(pop, gen, stats, isFinished) | Void                     | Optional   | Runs in the calling context. All functions other than this one are run in a web worker.\n\n\n## Optimizer\n\nThe optimizer specifies how to rank individuals against each other based on an arbitrary fitness score.  For example, minimizing the sum of squared error for a regression curve `Genetic.Optimize.Minimize` would be used, as a smaller fitness score is indicative of better fit.\n\n| Optimizer                  | Description\n| -------------------------- | -----------\n| Genetic.Optimize.Minimizer | The smaller fitness score of two individuals is best\n| Genetic.Optimize.Maximizer | The greater fitness score of two individuals is best\n\n\n## Selection\n\nAn algorithm can be either genetic or evolutionary depending on which selection operations are used.  An algorithm is evolutionary if it only uses a Single (select1) operator.  If both Single and Pair-wise operations are used (and if crossover is implemented) it is genetic.\n\n\n| Select Type         | Required    | Description\n| ------------------- | ----------- | -----------\n| select1 (Single)    | Yes         | Selects a single individual for survival from a population\n| select2 (Pair-wise) | Optional    | Selects two individuals from a population for mating/crossover\n\n\n### Selection Operators\n\n| Single Selectors                 | Description\n| -------------------------------- | -----------\n| Genetic.Select1.Tournament2      | Fittest of two random individuals\n| Genetic.Select1.Tournament3      | Fittest of three random individuals\n| Genetic.Select1.Fittest          | Always selects the Fittest individual\n| Genetic.Select1.Random           | Randomly selects an individual\n| Genetic.Select1.RandomLinearRank | Select random individual where probability is a linear function of rank\n| Genetic.Select1.Sequential       | Sequentially selects an individual\n\n| Pair-wise Selectors              | Description\n| -------------------------------- | -----------\n| Genetic.Select2.Tournament2      | Pairs two individuals, each the best from a random pair\n| Genetic.Select2.Tournament3      | Pairs two individuals, each the best from a random triplett\n| Genetic.Select2.Random           | Randomly pairs two individuals\n| Genetic.Select2.RandomLinearRank | Pairs two individuals, each randomly selected from a linear rank\n| Genetic.Select2.Sequential       | Selects adjacent pairs\n| Genetic.Select2.FittestRandom    | Pairs the most fit individual with random individuals\n\n\n```javascript\nvar genetic = Genetic.create();\n\n// more likely allows the most fit individuals to survive between generations\ngenetic.select1 = Genetic.Select1.RandomLinearRank;\n\n// always mates the most fit individual with random individuals\ngenetic.select2 = Genetic.Select2.FittestRandom;\n\n// ...\n```\n\n## Configuration Parameters\n\n| Parameter             | Default  | Range/Type  | Description\n| --------------------- | -------- | ----------  | -----------\n| size                  | 250      | Real Number | Population size\n| crossover             | 0.9      | [0.0, 1.0]  | Probability of crossover\n| mutation              | 0.2      | [0.0, 1.0]  | Probability of mutation\n| iterations            | 100      | Real Number | Maximum number of iterations before finishing\n| fittestAlwaysSurvives | true     | Boolean     | Prevents losing the best fit between generations\n| maxResults            | 100      | Real Number | The maximum number of best-fit results that webworkers will send per notification\n| webWorkers            | true     | Boolean     | Use [Web Workers](http://en.wikipedia.org/wiki/Web_worker) (when available)\n| skip                  | 0        | Real Number | Setting this higher throttles back how frequently `genetic.notification` gets called in the main thread.\n\n\n## Building\n\nTo clone, build, and test Genetic.js issue the following command:\n\n```bash\ngit clone git@github.com:subprotocol/genetic-js.git && make distcheck\n```\n\n| Command               | Description\n| --------------------- | -----------\n| make                  | Automatically install dev-dependencies, builds project, places library to js/ folder\n| make check            | Runs test cases\n| make clean            | Removes files from js/ library\n| make distclean        | Removes both files from js/ library and dev-dependencies\n| make distcheck        | Equivlant to running `make distclean && make && check`\n\n\n## Contributing\n\nFeel free to open issues and send pull-requests.\n\n",
+  "homepage": "https://github.com/subprotocol/genetic-js",
+  "_id": "genetic-js@0.1.14",
+  "dist": {
+    "shasum": "c54e316a9c57dfea9565160ed04186beb39eef8a"
+  },
+  "_from": "genetic-js@",
+  "_resolved": "https://registry.npmjs.org/genetic-js/-/genetic-js-0.1.14.tgz"
+}

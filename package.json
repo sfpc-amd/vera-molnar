@@ -1,4 +1,7 @@
 {
-	"name" : "vera-molnar",
-	"version" : "0.0.1"
+  "name": "vera-molnar",
+  "version": "0.0.1",
+  "dependencies": {
+    "genetic-js": "~0.1.14"
+  }
 }

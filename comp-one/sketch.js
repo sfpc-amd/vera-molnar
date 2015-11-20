@@ -11,7 +11,9 @@ var generationDrawingStarted = false;
 var m;
 
 function setup() {
-	canvas = createCanvas(windowWidth, windowHeight);
+	var canvasHeight = windowHeight < windowWidth*.6 ? windowHeight : windowWidth*.6 ;
+
+	canvas = createCanvas(windowWidth, canvasHeight);
 	canvas.parent('main');
 	setupBackground();
 	drawBackground();
