@@ -16,11 +16,9 @@ function MolnarEvolver(target, opts, cb) {
 	// extend additional properties
 	_.extend(this.ga, _proto);
 
-	console.log(this.ga);
 
 	// set notification
 	this.ga.notification = _.bind(function(pop, generation, stats, isFinished) {
-		// console.log('notification', arguments, this);
 		if(cb && typeof cb === 'function') {
 			cb.apply(this, arguments);
 		}
@@ -29,7 +27,6 @@ function MolnarEvolver(target, opts, cb) {
 
 MolnarEvolver.prototype.start = function() {
 	var data = { targetDna: this.target }
-	console.log('evolve!', this.opts, data);
 	this.ga.evolve(this.opts, data);
 };
 

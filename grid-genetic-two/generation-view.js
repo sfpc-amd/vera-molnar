@@ -1,8 +1,8 @@
 var d3 = require('d3');
 
 // requires d3
-var GenerationView = function(container, options) {
-	console.log('GenerationView::constructor', arguments);
+function GenerationView(container, options) {
+	console.log('GenerationView::constructor', this, arguments);
 
 	this.container = container;
 	this.width = options.width;
@@ -13,10 +13,9 @@ var GenerationView = function(container, options) {
 
 
 
-
 GenerationView.prototype.setup = function(data) {
 	console.log('GenerationView::setup', arguments);
-	this.data = data;
+	this.setData(data);
 
 	console.log('viewer data', data);
 
@@ -29,6 +28,11 @@ GenerationView.prototype.setup = function(data) {
 
 };
 
+GenerationView.prototype.setData = function(data) {
+	this.data = data.map(function(g) { return g.population });
+}
+
+
 // nested data
 // http://bost.ocks.org/mike/nest/
 GenerationView.prototype.update = function(data) {
@@ -40,9 +44,10 @@ GenerationView.prototype.update = function(data) {
 	var gridMargins = this.gridMargins;
 
 	if(data) {
-		this.data = data;
+		this.setData(data);
 	}
 
+	console.log('')
 
 	var gridXRange = d3.scale.linear()
 											.domain([0, gridPoints-1])
@@ -76,7 +81,7 @@ GenerationView.prototype.update = function(data) {
 											});
 
 	var grid = row.selectAll('.molnar-grid')
-									.data(function(d) { return d })//, function(d) { return d.id })
+									.data(function(d) { console.log(d); return d })//, function(d) { return d.id })
 									.enter()
 										.append('svg:g')
 										.attr('class', 'molnar-grid')
@@ -86,9 +91,9 @@ GenerationView.prototype.update = function(data) {
 										})
 										.append('svg:path')
 											.attr('class', 'molnar-grid-path')
-											.attr('title', function(d) { return d.id })
+											.attr('title', function(d) { return d.entity.dna.join('') +' '+ d.fitness})
 											.attr('d', function(d) {
-												return gridLine(d.get('dna'));
+												return gridLine(d.entity.dna);
 											});
 };
 
