@@ -34,10 +34,12 @@ var _proto = {
 	optimize: Genetic.Optimize.Maximize
 	, select1: Genetic.Select1.RandomLinearRank
 	, select2: Genetic.Select2.RandomLinearRank	
+	// , idCounter: 0
 
 	, seed: function seed() {
 		var grid = {
 			dna: this._randomDna(this.userData.targetDna.length)
+			, id: this.idCounter++
 		};
 		return grid;
 	}
@@ -65,15 +67,15 @@ var _proto = {
 		// var granular = this._getGranularFitness(grid.dna);
 		// var fitness = granular.reduce(function(m, v) { return m + v; });
 		var dna = grid.dna
+			, size = grid.dna.length
 			, target = this.userData.targetDna
-			, fitness = 0;
+			, matches = 0;
 
 		for(var i =0; i < dna.length; i++) {
-			if(dna[i] === target[i]) fitness++;
+			if(dna[i] === target[i]) matches++;
 		}
 
-		// console.log('fitness', fitness, grid.dna);
-		return fitness;
+		return matches/size;
 	}
 
 	, generation: function(pop, generation, stats) {
@@ -109,6 +111,9 @@ var _proto = {
 				child.dna[nextEmpty] = value;
 			}
 		});
+
+		child.parentIds = [parent1.id, parent2.id];
+		child.id = this.idCounter++;
 
 		return child;
 	}
@@ -165,6 +170,7 @@ var _proto = {
 
 		return mutatedDna;
 	}
+
 }
 
 

@@ -18,12 +18,12 @@ var config = {
 var generations = [];
 
 var gridMargins = {
-	top: 10
-	, right: 10
-	, bottom: 10
-	, left: 10
+	top: 15
+	, right: 15
+	, bottom: 15
+	, left: 15
 }
-var gridSize = (browser.width / 16);
+var gridSize = ((browser.width-gridMargins.right) / 16);
 
 console.log(browser.width, browser.height, gridSize, gridMargins);
 
@@ -48,30 +48,11 @@ function evolveStep(pop, n, stats, isFinished) {
 		, isFinished: isFinished
 	});
 	
-	// viewer.update(generations);
-
-	if(isFinished) {
-		console.log('done!');
-		// setup with data
-		// update
-		viewer.update(generations);
-	}
+	viewer.update(generations);
 }
 
 domready(function() {
-	var button = document.createElement('button')
-		, txt = document.createTextNode('Go!');
-
-	button.appendChild(txt);
-	document.body.appendChild(button);
-
 	viewer.setup(generations);
-
-	button.onclick = function() {
-		// genetic.evolve(config, data);
-		evolver.start();
-
-	}
-
+	evolver.start();
 });
 
